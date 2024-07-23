@@ -82,8 +82,8 @@ def softmax_loss_vectorized(W, X, y, reg):
     num_trains = X.shape[0]
     scores = X.dot(W)
     max_val = np.max(scores, axis=1).reshape(num_trains, 1)  # 挑选出每个样本中softmax的最大值
-    f = scores - max_val
-    softmax = np.exp(f) / np.sum(np.exp(f), axis=1).reshape(num_trains, 1)
+    softmax = scores - max_val
+    softmax = np.exp(softmax) / np.sum(np.exp(softmax), axis=1).reshape(num_trains, 1)
     loss = -np.sum(np.log(softmax[np.arange(num_trains), y]))
   
 

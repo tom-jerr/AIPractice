@@ -86,7 +86,7 @@ def svm_loss_vectorized(W, X, y, reg):
     #############################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    num_classes = W.shape[1]
+    # num_classes = W.shape[1]
     num_train = X.shape[0]
     scores = X.dot(W)
     correct_class_score = scores[np.arange(num_train), y].reshape(num_train, 1)
@@ -108,8 +108,9 @@ def svm_loss_vectorized(W, X, y, reg):
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
     margin[margin > 0] = 1  # 根据公式margin=sj-syi+1，要用每一行分类错-1的数量来更新Wy
-    wrong_count = margin.sum(axis=1) # 计算每个类别错误分类的数量
-    margin[np.arange(num_train), y] -= wrong_count # 每个w_ij需要正确加上xi并减去错误分类的xi
+    w_row_sum = margin.sum(axis=1) # 计算每个类别错误分类的数量
+    # print(w_row_sum.shape)
+    margin[np.arange(num_train), y] -= w_row_sum # 这里需要从实际类别的margin值中减去它所属类别错误分类的总数
     dW = X.T.dot(margin) / num_train + 2 * reg * W # 计算梯度
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
