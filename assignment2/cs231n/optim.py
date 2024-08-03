@@ -69,7 +69,10 @@ def sgd_momentum(w, dw, config=None):
     ###########################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    lr = config["learning_rate"]
+    momentum = config["momentum"]
+    v = momentum * v - lr * dw
+    next_w = w + v
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     ###########################################################################
@@ -107,7 +110,14 @@ def rmsprop(w, dw, config=None):
     ###########################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    lr = config["learning_rate"]
+    decay_rate = config["decay_rate"]
+    eps = config["epsilon"]
+    cache = config["cache"]
+
+    vt = decay_rate * cache + (1 - decay_rate) * dw**2
+    next_w = w - lr * dw / (np.sqrt(vt) + eps)
+    config["cache"] = vt
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     ###########################################################################
@@ -151,8 +161,26 @@ def adam(w, dw, config=None):
     # using it in any calculations.                                           #
     ###########################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    # 使用 t 之前先更新 t
+    config["t"] += 1
+    t = config["t"]
 
-    pass
+    lr = config["learning_rate"]
+    beta1 = config["beta1"]
+    beta2 = config["beta2"]
+    eps = config["epsilon"]
+    m = config["m"]
+    v = config["v"]
+    # 更新 m 和 v 
+    config['m'] = beta1 * m + (1 - beta1) * dw
+    config['v'] = beta2 * v + (1 - beta2) * dw**2
+
+
+    mt_hat = config['m'] / (1 - beta1**t)
+    vt_hat = config['v'] / (1 - beta2**t)
+    next_w = w - lr * mt_hat / (np.sqrt(vt_hat) + eps)
+
+
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     ###########################################################################
