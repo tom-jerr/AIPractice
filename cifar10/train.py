@@ -1,4 +1,3 @@
-'''Train CIFAR10 with PyTorch.'''
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -27,7 +26,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
-# Data
+# 数据预处理
 print('==> Preparing data..')
 transform_train = transforms.Compose([
     transforms.RandomCrop(32, padding=4),
@@ -44,12 +43,12 @@ transform_test = transforms.Compose([
 trainset = torchvision.datasets.CIFAR10(
     root='./dataset/cifar', train=True, download=True, transform=transform_train)
 trainloader = torch.utils.data.DataLoader(
-    trainset, batch_size=128, shuffle=True, num_workers=2)
+    trainset, batch_size=256, shuffle=True, num_workers=2)
 
 testset = torchvision.datasets.CIFAR10(
     root='./dataset/cifar', train=False, download=True, transform=transform_test)
 testloader = torch.utils.data.DataLoader(
-    testset, batch_size=128, shuffle=False, num_workers=2)
+    testset, batch_size=256, shuffle=False, num_workers=2)
 
 classes = ('plane', 'car', 'bird', 'cat', 'deer',
            'dog', 'frog', 'horse', 'ship', 'truck')
